@@ -13,8 +13,4 @@ public class Pictures {
     public String getIconUrl() {
         return iconUrl;
     }
-
-    public void setIconUrl(String iconUrl) {
-        this.iconUrl = iconUrl;
-    }
 }

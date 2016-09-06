@@ -20,13 +20,13 @@ public class ListAdapter extends BaseAdapter implements AbsListView.OnScrollList
     private List<Pictures> mList;
     private int mStart, mEnd;
     private boolean mFirstIn;
-    private ImageLoader mloader;
+    private ImageLoader mLoader;
     public static String URLs[];
 
     public ListAdapter(Context context, List<Pictures> data, ListView listView){
         mInflater = LayoutInflater.from(context);
         this.mList = data;
-        mloader = new ImageLoader(listView);
+        mLoader = new ImageLoader(listView);
         URLs = new String[data.size()];
         for(int i= 0; i < data.size(); i++ ){
             URLs[i] = data.get(i).getIconUrl();
@@ -64,7 +64,7 @@ public class ListAdapter extends BaseAdapter implements AbsListView.OnScrollList
         }
         String url = mList.get(position).getIconUrl();
         holder.icon.setTag(url);
-        mloader.showImage(holder.icon, url);
+        mLoader.showImages(holder.icon, url);
         return convertView;
     }
 
@@ -76,7 +76,7 @@ public class ListAdapter extends BaseAdapter implements AbsListView.OnScrollList
         mStart = firstVisibleItem;
        mEnd = mStart + visibleItemCon;
        if(mFirstIn && visibleItemCon > 0){
-           mloader.loadImage(mStart, mEnd);
+           mLoader.loadImage(mStart, mEnd);
            mFirstIn = false;
        }
    }
@@ -84,10 +84,10 @@ public class ListAdapter extends BaseAdapter implements AbsListView.OnScrollList
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         if(scrollState == SCROLL_STATE_IDLE){
-            mloader.loadImage(mStart, mEnd);
+            mLoader.loadImage(mStart, mEnd);
 
         }else {
-            mloader.canceAllTasks();
+            mLoader.cancelAllTasks();
         }
     }
 

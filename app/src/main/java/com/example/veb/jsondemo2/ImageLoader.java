@@ -29,8 +29,8 @@ public class ImageLoader {
     private ListView mListView;
     private Set<NewsAsyncTask> mTasks;//从start到end范围每次执行加载图片任务的集合
 
-    public ImageLoader(ListView listView)
-    {
+    //使用LruCache图片缓冲类来进行这样一个图片获取空间
+    public ImageLoader(ListView listView) {
         mListView = listView;
         mTasks = new HashSet<NewsAsyncTask>();
         int maxMemory = (int) Runtime.getRuntime().maxMemory();//获取最大可用内存
@@ -47,8 +47,7 @@ public class ImageLoader {
      * 将已联网获取成功的图片加入到缓存中
      * @param bitmap
      */
-    public void addBitmapToCache(String url, Bitmap bitmap)
-    {
+    public void addBitmapToCache(String url, Bitmap bitmap) {
         //在将图片缓存到本地之前要判断这个图片是否已经缓存过了
         if (getBitmapFromCache(url) == null) {
             mCache.put(url, bitmap);
@@ -73,12 +72,11 @@ public class ImageLoader {
 
         }
     };
-
     /**
      * 通过使用Thread的方式从网络上获取图片
      */
-    public void showImageByThread(ImageView imageView, final String iconUrl)
-    {
+
+    public void showImageByThread(ImageView imageView, final String iconUrl) {
         mImageView = imageView;
         url = iconUrl;
         new Thread(){
@@ -94,8 +92,8 @@ public class ImageLoader {
             }
         }.start();
     }
-    public Bitmap getBitmapFromUrl(String urlString)
-    {
+
+    public Bitmap getBitmapFromUrl(String urlString) {
         InputStream is = null;
         Bitmap bitmap;
         try {
@@ -128,8 +126,8 @@ public class ImageLoader {
      * 加载listview可见范围内的所有图片
      *
      */
-    public void loadImages(int start, int end)
-    {
+
+    public void loadImage(int start, int end) {
         for (int i = start; i < end; i++) {
             String url = ListAdapter.URLs[i];
             //看是否能从缓存中取出对应的图片
@@ -140,6 +138,7 @@ public class ImageLoader {
                 task.execute(url);
                 mTasks.add(task);
 
+
             }else {
                 //如果缓存中存在此图片，直接将其设置给对应的imageview即可
                 //因为我们之前给imageview设置的tag就是URL,可以利用findViewWithTag直接在这里获取到
@@ -148,11 +147,12 @@ public class ImageLoader {
             }
         }
     }
+
     /**
      * 取消所有正在进行的图片加载任务
      */
-    public void cancelAllTasks()
-    {
+
+    public void cancelAllTasks() {
         if (mTasks != null) {
             for(NewsAsyncTask task : mTasks)
             {
@@ -161,8 +161,7 @@ public class ImageLoader {
         }
     }
 
-    public void showImages(ImageView imageView, String iconUrl)
-    {
+    public void showImages(ImageView imageView, String iconUrl) {
         //是否能从缓存中取出对应的图片
         Bitmap bitmap = getBitmapFromCache(iconUrl);
         if (bitmap == null) {
@@ -176,8 +175,7 @@ public class ImageLoader {
     /**
      * 使用AsyncTask实现图片的异步加载
      */
-    class NewsAsyncTask extends AsyncTask<String, Void, Bitmap>
-    {
+    class NewsAsyncTask extends AsyncTask<String, Void, Bitmap> {
         //private ImageView mImageView;
         private String mUrl;
         public NewsAsyncTask(String url) {
