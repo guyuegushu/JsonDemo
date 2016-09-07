@@ -5,9 +5,19 @@ package com.example.veb.jsondemo2;
  */
 public class Pictures {
     private String iconUrl;
+    private String text;
 
-    public Pictures(String iconUrl){
+    public Pictures(String iconUrl, String text){
         this.iconUrl = iconUrl;
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getIconUrl() {
