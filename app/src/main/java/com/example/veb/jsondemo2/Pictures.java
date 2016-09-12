@@ -3,6 +3,7 @@ package com.example.veb.jsondemo2;
 /**
  * Created by VEB on 2016/9/5.
  */
+
 public class Pictures {
     private String iconUrl;
     private String text;
@@ -12,11 +13,11 @@ public class Pictures {
         this.text = text;
     }
 
-    public String getText() {
+    public String getTexts() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setTexts(String text) {
         this.text = text;
     }
 

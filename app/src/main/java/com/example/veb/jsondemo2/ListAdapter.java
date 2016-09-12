@@ -63,7 +63,7 @@ public class ListAdapter extends BaseAdapter {
         }else {
             holder = (Holder) convertView.getTag();
         }
-        holder.text.setText((position+1) + ".  " + mList.get(position).getText());
+        holder.text.setText((position+1) + ".  " + mList.get(position).getTexts());
         String url = mList.get(position).getIconUrl();
         holder.icon.setTag(url);//
         mLoader.showImages(holder.icon, url);

@@ -28,7 +28,7 @@ public class ImageLoader {
 
     public ImageLoader(ListView listView) {
         mListView = listView;
-        mTasks = new HashSet<NewsAsyncTask>();
+        mTasks = new HashSet<>();
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory/4;
         mCache = new LruCache<String, Bitmap>(cacheSize){

@@ -26,10 +26,10 @@ import java.util.List;
 /**
  * Created by VEB on 2016/9/5.
  */
+
 public class MainActivity extends Activity implements ClickListener {
 
     private ListView mListView;
-    private Button button;
     private static String jsonURL = "http://www.imooc.com/api/teacher?type=4&num=30";
 
     @Override
@@ -37,7 +37,6 @@ public class MainActivity extends Activity implements ClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         mListView = (ListView) findViewById(R.id.list);
-        button = (Button) findViewById(R.id.text);
         new NewsAsyncTask().execute(jsonURL);
     }
 
@@ -67,8 +66,7 @@ public class MainActivity extends Activity implements ClickListener {
         }
     }
 
-    private List<Pictures> getJsonData(String url)
-    {
+    private List<Pictures> getJsonData(String url) {
         List<Pictures> picturesList = new ArrayList<>();
         try {
             String jsonString = readStream(new URL(url).openStream());
@@ -96,8 +94,7 @@ public class MainActivity extends Activity implements ClickListener {
         return picturesList;
     }
 
-    private String readStream(InputStream is)
-    {
+    private String readStream(InputStream is) {
         InputStreamReader isReader;
         String result = "";
         String line ="";
@@ -117,8 +114,7 @@ public class MainActivity extends Activity implements ClickListener {
         return result;
     }
 
-    class NewsAsyncTask extends AsyncTask<String, Void, List<Pictures>>
-    {
+    class NewsAsyncTask extends AsyncTask<String, Void, List<Pictures>> {
 
         @Override
         protected List<Pictures> doInBackground(String... params) {
