@@ -1,5 +1,6 @@
 package com.example.veb.jsondemo2;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -20,34 +21,29 @@ import java.util.Set;
  * Created by VEB on 2016/9/5.
  */
 public class ImageLoader {
-    private ImageView mImageView;
-    private String url;
-    private LruCache<String, Bitmap> mCache;
+    private DBManager dbManager;
     private ListView mListView;
     private Set<NewsAsyncTask> mTasks;
 
-    public ImageLoader(ListView listView) {
+
+    public ImageLoader(ListView listView, Context context) {
         mListView = listView;
+        dbManager = new DBManager(context);
         mTasks = new HashSet<>();
-        int maxMemory = (int) Runtime.getRuntime().maxMemory();
-        int cacheSize = maxMemory/4;
-        mCache = new LruCache<String, Bitmap>(cacheSize){
-            @Override
-            protected int sizeOf(String key, Bitmap value) {
-                return value.getByteCount();
-            }
-        };
+
     }
 
     public void addBitmapToCache(String url, Bitmap bitmap) {
+
         if (getBitmapFromCache(url) == null) {
-            mCache.put(url, bitmap);
+
+            dbManager.cacheTodb(bitmap, url);
         }
     }
 
     public Bitmap getBitmapFromCache(String url)
     {
-        return mCache.get(url);
+        return dbManager.getPicture(url);
     }
 
     public Bitmap getBitmapFromUrl(String urlString) {
@@ -87,8 +83,6 @@ public class ImageLoader {
                 NewsAsyncTask task = new NewsAsyncTask(url);
                 task.execute(url);
                 mTasks.add(task);
-
-
             }else {
                 ImageView imageView = (ImageView) mListView.findViewWithTag(url);
                 imageView.setImageBitmap(bitmap);

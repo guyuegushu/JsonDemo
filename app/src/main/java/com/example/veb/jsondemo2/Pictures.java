@@ -17,10 +17,6 @@ public class Pictures {
         return text;
     }
 
-    public void setTexts(String text) {
-        this.text = text;
-    }
-
     public String getIconUrl() {
         return iconUrl;
     }

@@ -27,7 +27,7 @@ public class ListAdapter extends BaseAdapter {
         this.clickListener = clickListener;
         mInflater = LayoutInflater.from(context);
         this.mList = data;
-        mLoader = new ImageLoader(listView);
+        mLoader = new ImageLoader(listView,context);
         URLs = new String[data.size()];
         for(int i= 0; i < data.size(); i++ ){
             URLs[i] = data.get(i).getIconUrl();
