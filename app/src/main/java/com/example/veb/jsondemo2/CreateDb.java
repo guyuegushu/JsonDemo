@@ -14,20 +14,21 @@ public class CreateDb extends SQLiteOpenHelper {
 
     public CreateDb(Context mContext){
 
-        this(mContext, Database_Name, null,VERSION);
-    } //??
+        super(mContext, Database_Name, null,VERSION);
+    }
 
-    public CreateDb(Context mContext, String name, SQLiteDatabase.CursorFactory factory, int version ) {
-
-        super(mContext, name, factory, version);
-
-    } //??
+//    public CreateDb(Context mContext, String name, SQLiteDatabase.CursorFactory factory, int version ) {
+//
+//        super(mContext, name, factory, version);
+//
+//    } //??
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String tables = "create table Save(" +
-                "ID INT PRIMARY KEY NOT NULL AUTOINCREMENT," +
-                "PICTURE BLOB)";
+//        db = this.getReadableDatabase();
+        String tables = "create table if not exists  Saves(" +
+                "_id INT PRIMARY KEY NOT NULL," +
+                "picture BLOB)";
         db.execSQL(tables);
     }
 

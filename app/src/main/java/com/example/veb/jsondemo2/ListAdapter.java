@@ -20,14 +20,16 @@ public class ListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private ClickListener clickListener;
     private List<Pictures> mList;
-    private ImageLoader mLoader;
+    private ImageLoader mLoader ;
     public static String URLs[];
+
 
     public ListAdapter(Context context, List<Pictures> data, ListView listView, ClickListener clickListener){
         this.clickListener = clickListener;
         mInflater = LayoutInflater.from(context);
         this.mList = data;
         mLoader = new ImageLoader(listView);
+        mLoader.setContext(context);
         URLs = new String[data.size()];
         for(int i= 0; i < data.size(); i++ ){
             URLs[i] = data.get(i).getIconUrl();
@@ -65,7 +67,7 @@ public class ListAdapter extends BaseAdapter {
         }
         holder.text.setText((position+1) + ".  " + mList.get(position).getTexts());
         String url = mList.get(position).getIconUrl();
-        holder.icon.setTag(url);//
+        holder.icon.setTag(url);
         mLoader.showImages(holder.icon, url);
 
         final View v = convertView;
