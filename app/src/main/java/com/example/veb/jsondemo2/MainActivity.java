@@ -1,9 +1,7 @@
 package com.example.veb.jsondemo2;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -32,15 +30,12 @@ import java.util.List;
 public class MainActivity extends Activity implements ClickListener {
 
     private ListView mListView;
-//    private GetPicture getP;
-//    private CreateDb createDb;
     private static String jsonURL = "http://www.imooc.com/api/teacher?type=4&num=30";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        SQLiteDatabase db = openOrCreateDatabase("JasonSave.db", Context.MODE_PRIVATE, null);
         mListView = (ListView) findViewById(R.id.list);
         new NewsAsyncTask().execute(jsonURL);
     }
@@ -112,6 +107,7 @@ public class MainActivity extends Activity implements ClickListener {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

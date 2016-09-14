@@ -1,9 +1,9 @@
 package com.example.veb.jsondemo2;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.LruCache;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -20,40 +20,34 @@ import java.util.Set;
  * Created by VEB on 2016/9/5.
  */
 public class ImageLoader {
-
-    private GetPicture getP;
+    private ImageView mImageView;
+    private String url;
+    private LruCache<String, Bitmap> mCache;
     private ListView mListView;
     private Set<NewsAsyncTask> mTasks;
-    private Context mContext;
-    private CachePicture cachePicture;
-
-
-
-    public void setContext(Context context){
-        this.mContext = context;
-
-    }
 
     public ImageLoader(ListView listView) {
         mListView = listView;
         mTasks = new HashSet<>();
+        int maxMemory = (int) Runtime.getRuntime().maxMemory();
+        int cacheSize = maxMemory/4;
+        mCache = new LruCache<String, Bitmap>(cacheSize){
+            @Override
+            protected int sizeOf(String key, Bitmap value) {
+                return value.getByteCount();
+            }
+        };
     }
 
-    public void addBitmapToCache(String url) {
-
-        if (getBitmapFromUrl(url) != null) {
-            cachePicture = new CachePicture();
-            cachePicture.cacheToTable(getBitmapFromUrl(url),mContext, url);
+    public void addBitmapToCache(String url, Bitmap bitmap) {
+        if (getBitmapFromCache(url) == null) {
+            mCache.put(url, bitmap);
         }
     }
 
-    public Bitmap getBitmapFromCache(Context context, String url)
+    public Bitmap getBitmapFromCache(String url)
     {
-        Bitmap bitmap = null;
-        getP = new GetPicture();
-        bitmap= getP.getPicture(context);
-        return bitmap;
-
+        return mCache.get(url);
     }
 
     public Bitmap getBitmapFromUrl(String urlString) {
@@ -88,7 +82,7 @@ public class ImageLoader {
     public void loadImage(int sizes) {
         for (int i = 0; i < sizes; i++) {
             String url = ListAdapter.URLs[i];
-            Bitmap bitmap = getBitmapFromCache(mContext, url);
+            Bitmap bitmap = getBitmapFromCache(url);
             if (bitmap == null) {
                 NewsAsyncTask task = new NewsAsyncTask(url);
                 task.execute(url);
@@ -104,8 +98,8 @@ public class ImageLoader {
 
 
 
-    public void showImages(ImageView imageView, String url) {
-        Bitmap bitmap = getBitmapFromCache(mContext, url);
+    public void showImages(ImageView imageView, String iconUrl) {
+        Bitmap bitmap = getBitmapFromCache(iconUrl);
         if (bitmap == null) {
             imageView.setImageResource(R.mipmap.ic_launcher);
         }else {
@@ -124,7 +118,7 @@ public class ImageLoader {
             String url = params[0];
             Bitmap bitmap = getBitmapFromUrl(url);
             if (bitmap != null) {
-                addBitmapToCache(url);
+                addBitmapToCache(url, bitmap);
             }
             return bitmap;
         }
